@@ -59,7 +59,7 @@ public class App {
                 Påbörja laddning klockan %02d
                 Medelpris 4h: %.1f öre/kWh
                 """;
-        System.out.print(String.format(response, hour, ((float) cheapestFourHours) / 4));
+        System.out.printf(response, hour, ((float) cheapestFourHours) / 4);
     }
 
     private static void sortera() {
@@ -80,7 +80,7 @@ public class App {
                 Högsta pris: %s/kWh
                 Medelpris: %.2f öre/kWh
                 """;
-        System.out.print(String.format(response,database.min().toStringWithComma(),database.max().toStringWithComma(),database.mean()));
+        System.out.printf(response,database.min().toStringWithComma(),database.max().toStringWithComma(),database.mean());
 
     }
 
