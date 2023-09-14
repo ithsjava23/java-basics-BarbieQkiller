@@ -1,12 +1,10 @@
 package org.example;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
 
 public class App {
-    static int[] prices = new int[24];
+    static Database database;
 
     public static void main(String[] args) {
         printMainMenu();
@@ -32,10 +30,10 @@ public class App {
                 userInput(scanner);
             }
             if (s.equals("2")) {
-                minMaxMedel();
+                minMaxMean();
             }
             if (s.equals("3")) {
-                sortera();
+                sort();
             }
             if (s.equals("4")) {
                 optimizedCharging();
@@ -46,48 +44,36 @@ public class App {
     }
 
     private static void optimizedCharging() {
-        int hour = 0;
-        int cheapestFourHours = Integer.MAX_VALUE;
-        for (int i = 0; i < (prices.length - 3); i++) {
-            int sum = prices[i] + prices[i + 1] + prices[i + 2] + prices[i + 3];
-            if (sum < cheapestFourHours) {
-                cheapestFourHours = sum;
-                hour = i;
-            }
-        }
+        MeanAndHour meanAndHour = database.optimizedCharging();
         String response = """
                 Påbörja laddning klockan %02d
                 Medelpris 4h: %.1f öre/kWh
                 """;
-        System.out.printf(response, hour, ((float) cheapestFourHours) / 4);
+        System.out.printf(response, meanAndHour.getHour(), meanAndHour.getMean());
     }
 
-    private static void sortera() {
-        List<PriceAndHour> priceAndHours = new ArrayList<>();
-        for (int i = 0; i < prices.length; i++) {
-            priceAndHours.add(new PriceAndHour(prices[i], i));
-        }
-        Collections.sort(priceAndHours);
+    private static void sort() {
+        List<PriceAndHour> priceAndHours = database.sortedList();
         for (PriceAndHour position : priceAndHours) {
             System.out.print(position + "\n");
         }
     }
 
-        private static void minMaxMedel() {
-       Database database = new Database(prices);
+    private static void minMaxMean() {
         String response = """
                 Lägsta pris: %s/kWh
                 Högsta pris: %s/kWh
                 Medelpris: %.2f öre/kWh
                 """;
-        System.out.printf(response,database.min().toStringWithComma(),database.max().toStringWithComma(),database.mean());
+        System.out.printf(response, database.min().toStringWithComma(), database.max().toStringWithComma(), database.mean());
 
     }
 
     public static void userInput(Scanner scanner) {
+        int[] prices = new int[24];
         for (int i = 0; i < prices.length; i++) {
             prices[i] = scanner.nextInt();
         }
-
+        database = new Database(prices);
     }
 }
