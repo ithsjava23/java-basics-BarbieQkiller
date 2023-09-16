@@ -60,6 +60,47 @@ public class Database {
         return ((float) sum) / prices.length;
     }
 
+    @Override
+    public String toString() {
+        StringBuilder visualisering = new StringBuilder();
+        int max = max().price;
+        int min = min().price;
+        float delta = (max - min) / 5.0f;
+        int[] takesCareOfTheDecimalIssue = new int[6];
+        takesCareOfTheDecimalIssue[0] = max;
+        takesCareOfTheDecimalIssue[1] = (int) (max - delta);
+        takesCareOfTheDecimalIssue[2] = (int) (max - 2 * delta);
+        takesCareOfTheDecimalIssue[3] = (int) (max - 3 * delta);
+        takesCareOfTheDecimalIssue[4] = (int) (max - 4 * delta);
+        takesCareOfTheDecimalIssue[5] = min;
+
+        for (int price : takesCareOfTheDecimalIssue) {
+            if (price == max || price == min) {
+                visualisering.append(String.format("%3d|", price));
+
+            } else {
+                visualisering.append("   |");
+
+            }
+            for (int hour = 0; hour < prices.length; hour++) {
+                if (price > prices[hour]) {
+                    visualisering.append("   ");
+                } else {
+                    visualisering.append("  x");
+                }
+            }
+            visualisering.append("\n");
+
+        }
+        visualisering.append("   |------------------------------------------------------------------------\n");
+        visualisering.append("   |");
+        for (int hour = 0; hour < prices.length; hour++) {
+            visualisering.append(String.format(" %02d", hour));
+        }
+        visualisering.append("\n");
+        return visualisering.toString();
+    }
+
     public MeanAndHour optimizedCharging() {
         int hour = 0;
         int cheapestFourHours = Integer.MAX_VALUE;

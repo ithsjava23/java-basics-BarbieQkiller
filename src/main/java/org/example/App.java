@@ -18,6 +18,7 @@ public class App {
                 2. Min, Max och Medel
                 3. Sortera
                 4. Bästa Laddningstid (4h)
+                5. Visualisering
                 e. Avsluta
                 """);
         Scanner scanner = new Scanner(System.in);
@@ -37,6 +38,9 @@ public class App {
             }
             if (s.equals("4")) {
                 optimizedCharging();
+            }
+            if (s.equals("5")) {
+                visualisering();
             }
             printMainMenu();
         }
@@ -67,6 +71,9 @@ public class App {
                 """;
         System.out.printf(response, database.min().toStringWithComma(), database.max().toStringWithComma(), database.mean());
 
+    }
+    private static void visualisering(){
+        System.out.println(database.toString());
     }
 
     public static void userInput(Scanner scanner) {
